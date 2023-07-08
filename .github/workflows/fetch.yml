@@ -15,11 +15,11 @@ permissions:
   contents: read
 
 jobs:
-  build:
-
-    name: Build and test
+  fetch:
+    name: Fetch
     runs-on: ubuntu-20.04
-
+    outputs:
+      fetch-result: ${{steps.fetch.outputs.result}}
     steps:
     - uses: actions/checkout@v3
     - name: Set up Elixir
@@ -35,5 +35,15 @@ jobs:
         restore-keys: ${{ runner.os }}-mix-
     - name: Install dependencies
       run: mix deps.get
-    - name: Run fetch
-      run: mix fetch
+    - id: fetch
+      name: Run fetch
+      run: echo "result=mix fetch" >> "$GITHUB_OUTPUT"
+  notify:
+    name: Notify
+    runs-on: ubuntu-20.04
+    needs: fetch
+    steps:
+      - env:
+          FETCH_RESULT: ${{ needs.fetch.outputs.fetch-result }}
+        run: echo "$FETCH_RESULT"
+    
