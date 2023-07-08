@@ -45,7 +45,12 @@ jobs:
     runs-on: ubuntu-20.04
     needs: fetch
     steps:
-      - env:
+      - uses: appleboy/telegram-action@master
+        env:
           FETCH_RESULT: ${{ needs.fetch.outputs.fetch-result }}
-        run: echo "$FETCH_RESULT"
-    
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          message: |
+            다음 골든 타임: $FETCH_RESULT
