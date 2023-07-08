@@ -35,6 +35,8 @@ jobs:
         restore-keys: ${{ runner.os }}-mix-
     - name: Install dependencies
       run: mix deps.get
+    - name: Compile project.
+      run: mix compile
     - id: fetch
       name: Run fetch
       run: echo "result=$(mix fetch)" >> "$GITHUB_OUTPUT"
