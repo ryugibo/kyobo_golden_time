@@ -37,7 +37,7 @@ jobs:
       run: mix deps.get
     - id: fetch
       name: Run fetch
-      run: echo "result=mix fetch" >> "$GITHUB_OUTPUT"
+      run: echo "result=$(mix fetch)" >> "$GITHUB_OUTPUT"
   notify:
     name: Notify
     runs-on: ubuntu-20.04
