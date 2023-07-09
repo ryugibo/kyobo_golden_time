@@ -36,7 +36,7 @@ jobs:
     - name: Compile project.
       run: mix compile
     - name: Run fetch
-      run: echo "fetch_result=$(mix fetch)" >> "$GITHUB_ENV"
+      run: echo "fetch_result='$(mix fetch)'" >> "$GITHUB_ENV"
   notify:
     name: Notify
     runs-on: ubuntu-20.04
