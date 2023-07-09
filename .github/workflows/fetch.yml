@@ -7,7 +7,7 @@ name: Fetching golden time
 
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: "*/30 * * * *"
 
 permissions:
   contents: read
@@ -19,38 +19,39 @@ jobs:
     outputs:
       fetch_result: ${{ steps.fetch.outputs.fetch_result }}
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Elixir
-      uses: erlef/setup-beam@main
-      with:
-        elixir-version: '1.15.2' # Define the elixir version [required]
-        otp-version: '25.3.2.3' # Define the OTP version [required]
-    - name: Restore dependencies cache
-      uses: actions/cache@v3
-      with:
-        path: |
-          deps
-          _build
-        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
-        restore-keys: ${{ runner.os }}-mix-
-    - name: Install dependencies
-      run: mix deps.get
-    - name: Compile project.
-      run: mix compile
-    - id: fetch
-      name: Run fetch
-      run: echo "fetch_result=$(mix fetch)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v3
+      - name: Set up Elixir
+        uses: erlef/setup-beam@main
+        with:
+          elixir-version: "1.15.2" # Define the elixir version [required]
+          otp-version: "25.3.2.3" # Define the OTP version [required]
+      - name: Restore dependencies cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            deps
+            _build
+            tmp
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-
+      - name: Install dependencies
+        run: mix deps.get
+      - name: Compile project.
+        run: mix compile
+      - id: fetch
+        name: Run fetch
+        run: echo "fetch_result=$(mix fetch)" >> "$GITHUB_OUTPUT"
   notify:
     name: Notify
     if: ${{ needs.fetch.outputs.fetch_result }} != 'error'
     runs-on: ubuntu-20.04
     needs: fetch
     steps:
-    - uses: appleboy/telegram-action@master
-      env:
-        FETCH_RESULT: ${{ needs.fetch.outputs.fetch_result }}
-      with:
-        to: ${{ secrets.TELEGRAM_TO }}
-        token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: |
-          다음 골든 타임: ${{ env.FETCH_RESULT }}
+      - uses: appleboy/telegram-action@master
+        env:
+          FETCH_RESULT: ${{ needs.fetch.outputs.fetch_result }}
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            다음 골든 타임: ${{ env.FETCH_RESULT }}
