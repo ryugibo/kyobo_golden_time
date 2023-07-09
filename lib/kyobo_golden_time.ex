@@ -6,7 +6,8 @@ defmodule KyoboGoldenTime do
   def fetch() do
     with %{status_code: 200, body: body} <-
            Crawly.fetch("https://www.kyobobook.co.kr/api/gw/onk/benefit/checkGoldenTimeNow"),
-         {:ok, %{data: %{type: "READY", startTime: startTime}}} <- Jason.decode(body, keys: :atoms) do
+         {:ok, %{data: %{type: "READY", startTime: startTime}}} <-
+           Jason.decode(body, keys: :atoms) do
       startTime
     else
       _ ->
