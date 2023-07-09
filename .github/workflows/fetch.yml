@@ -18,6 +18,8 @@ jobs:
   fetch:
     name: Fetch
     runs-on: ubuntu-20.04
+    outputs:
+      fetch-result: ${{ steps.fetch.outputs.result }}
     steps:
     - uses: actions/checkout@v3
     - name: Set up Elixir
@@ -36,15 +38,17 @@ jobs:
     - name: Compile project.
       run: mix compile
     - name: Run fetch
-      run: echo "fetch_result='$(mix fetch)'" >> "$GITHUB_ENV"
+      run: echo "fetch_result=$(mix fetch)" >> "$GITHUB_OUTPUT"
   notify:
     name: Notify
     runs-on: ubuntu-20.04
     needs: fetch
     steps:
     - uses: appleboy/telegram-action@master
+      env:
+        FETCH_RESULT: ${{ needs.fetch.outputs.fetch-result }}
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
         message: |
-          다음 골든 타임: ${{ env.fetch_result }}
+          다음 골든 타임: ${{ env.FETCH_RESULT }}
