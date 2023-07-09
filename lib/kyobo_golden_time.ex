@@ -32,7 +32,7 @@ defmodule KyoboGoldenTime do
       File.write!("tmp/prev_result", startTime)
       startTime
     else
-      o ->
+      _ ->
         "error"
     end
     |> IO.puts()
