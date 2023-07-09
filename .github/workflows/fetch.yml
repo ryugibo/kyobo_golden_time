@@ -37,7 +37,8 @@ jobs:
       run: mix deps.get
     - name: Compile project.
       run: mix compile
-    - name: Run fetch
+    - id: fetch
+      name: Run fetch
       run: echo "fetch_result=$(mix fetch)" >> "$GITHUB_OUTPUT"
   notify:
     name: Notify
