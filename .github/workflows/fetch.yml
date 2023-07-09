@@ -37,14 +37,3 @@ jobs:
       run: mix compile
     - name: Run fetch
       run: echo "fetch_result=$(mix fetch)" >> "$GITHUB_ENV"
-  notify:
-    name: Notify
-    runs-on: ubuntu-20.04
-    needs: fetch
-    steps:
-    - uses: appleboy/telegram-action@master
-      with:
-        to: ${{ secrets.TELEGRAM_TO }}
-        token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: |
-          다음 골든 타임: 
