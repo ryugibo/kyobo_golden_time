@@ -19,7 +19,7 @@ jobs:
     name: Fetch
     runs-on: ubuntu-20.04
     outputs:
-      fetch-result: ${{ steps.fetch.outputs.result }}
+      fetch_result: ${{ steps.fetch.outputs.fetch_result }}
     steps:
     - uses: actions/checkout@v3
     - name: Set up Elixir
@@ -46,7 +46,7 @@ jobs:
     steps:
     - uses: appleboy/telegram-action@master
       env:
-        FETCH_RESULT: ${{ needs.fetch.outputs.fetch-result }}
+        FETCH_RESULT: ${{ needs.fetch.outputs.fetch_result }}
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
