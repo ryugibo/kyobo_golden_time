@@ -7,7 +7,7 @@ name: Fetching golden time
 
 on:
   schedule:
-    - cron: '15,45 * * * *'
+    - cron: '*/30 * * * *'
 
 permissions:
   contents: read
