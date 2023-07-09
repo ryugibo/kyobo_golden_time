@@ -47,4 +47,4 @@ jobs:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
         message: |
-          다음 골든 타임: 
+          다음 골든 타임: #{{ env.fetch_result }}
