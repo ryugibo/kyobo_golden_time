@@ -33,7 +33,6 @@ defmodule KyoboGoldenTime do
       startTime
     else
       o ->
-        o |> IO.inspect(label: "error")
         "error"
     end
     |> IO.puts()
