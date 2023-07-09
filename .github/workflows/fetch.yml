@@ -42,13 +42,13 @@ jobs:
       run: echo "fetch_result=$(mix fetch)" >> "$GITHUB_OUTPUT"
   notify:
     name: Notify
+    if: ${{ needs.fetch.outputs.fetch_result }} != 'error'
     runs-on: ubuntu-20.04
     needs: fetch
     steps:
     - uses: appleboy/telegram-action@master
       env:
         FETCH_RESULT: ${{ needs.fetch.outputs.fetch_result }}
-      if: ${{ env.FETCH_RESULT }} != 'error'
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
