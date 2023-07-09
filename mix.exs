@@ -22,8 +22,7 @@ defmodule KyoboGoldenTime.MixProject do
   defp deps do
     [
       {:crawly, "~> 0.15.0"},
-      {:floki, "~> 0.33.0"},
-      {:timex, "~> 3.0"}
+      {:jason, "~> 1.4"}
     ]
   end
 end
