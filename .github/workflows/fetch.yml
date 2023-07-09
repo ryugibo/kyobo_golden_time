@@ -46,8 +46,10 @@ jobs:
     needs: fetch
     steps:
       - uses: appleboy/telegram-action@master
+        env:
+          FETCH_RESULT: ${{ needs.fetch.outputs.fetch-result }}
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            다음 골든 타임: ${{ needs.fetch.outputs.fetch-result }}
+            다음 골든 타임: ${{ FETCH_RESULT }}
