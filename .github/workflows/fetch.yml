@@ -44,6 +44,7 @@ jobs:
         name: Run fetch
         run: echo "fetch_result=$(mix fetch)" >> "$GITHUB_OUTPUT"
       - name: Save prev_result cache
+        if: ${{ needs.fetch.outputs.fetch_result != 'error' }}
         uses: actions/cache/save@v3
         with:
           path: tmp
