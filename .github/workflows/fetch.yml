@@ -33,6 +33,16 @@ jobs:
           restore-keys: ${{ runner.os }}-mix-
       - name: Install dependencies
         run: mix deps.get
+      - name: Fetch source code hashes
+        id: lib-hash
+        uses: theowenyoung/folder-hash@v3
+        path: lib
+      - name: Restore compile cache
+        uses: actions/cache@v3
+        with:
+          path: _build
+          key: ${{ runner.os }}-build-${{ hashFiles('**/mix.lock') }}-${{ steps.lib-hash.outputs.hash }}
+          restore-keys: ${{ runner.os }}-build-
       - name: Compile project.
         run: mix compile
       - name: Restore prev_result cache
