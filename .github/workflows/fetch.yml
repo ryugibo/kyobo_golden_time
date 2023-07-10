@@ -28,9 +28,7 @@ jobs:
       - name: Restore dependencies cache
         uses: actions/cache@v3
         with:
-          path: |
-            deps
-            _build
+          path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
           restore-keys: ${{ runner.os }}-mix-
       - name: Prev result cache
@@ -43,9 +41,19 @@ jobs:
         run: mix deps.get
       - name: Compile project.
         run: mix compile
+      - name: Restore prev_result cache
+        uses: actions/cache/restore@v3
+        with:
+          path: tmp
+          key: prev_result-
       - id: fetch
         name: Run fetch
         run: echo "fetch_result=$(mix fetch)" >> "$GITHUB_OUTPUT"
+      - name: Save prev_result cache
+        uses: actions/cache/save@v3
+        with:
+          path: tmp
+          key: prev_result-${{ steps.fetch.outputs.fetch_result }}
   notify:
     name: Notify
     if: ${{ needs.fetch.outputs.fetch_result != 'error' }}
