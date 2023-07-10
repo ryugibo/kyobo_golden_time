@@ -37,7 +37,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: tmp
-          key: result-${{ steps.fetch.outputs.fetch_result }}
+          key: result-${{ hashFiles('**/tmp/prev_result') }}
           restore-keys: result-
       - name: Install dependencies
         run: mix deps.get
