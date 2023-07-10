@@ -36,7 +36,8 @@ jobs:
       - name: Fetch source code hashes
         id: lib-hash
         uses: theowenyoung/folder-hash@v3
-        path: lib
+        with:
+          path: lib
       - name: Restore compile cache
         uses: actions/cache@v3
         with:
