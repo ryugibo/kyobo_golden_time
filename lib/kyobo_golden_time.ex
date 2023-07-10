@@ -3,14 +3,9 @@ defmodule KyoboGoldenTime do
   Documentation for `KyoboGoldenTime`.
   """
 
-  @prev_directory "tmp/"
-  @prev_file_path "#{@prev_directory}prev_result"
+  @prev_file_path "prev_result"
 
   defp get_prev_result() do
-    unless File.exists?(@prev_directory) do
-      File.mkdir(@prev_directory)
-    end
-
     File.read(@prev_file_path)
     |> case do
       {:ok, prev_time} ->
@@ -29,7 +24,7 @@ defmodule KyoboGoldenTime do
          {:ok, %{data: %{type: "READY", startTime: startTime}}} <-
            Jason.decode(body, keys: :atoms),
          true <- prev_time != startTime || {:error, :not_changed} do
-      File.write!("tmp/prev_result", startTime)
+      File.write!("prev_result", startTime)
       startTime
     else
       _ ->
