@@ -24,13 +24,13 @@ defmodule KyoboGoldenTime do
   def fetch() do
     prev_time = get_prev_result()
 
-    with %{status_code: 200, body: body} <-
-           Crawly.fetch("https://www.kyobobook.co.kr/api/gw/onk/benefit/checkGoldenTimeNow"),
-         {:ok, %{data: %{type: "READY", startTime: startTime}}} <-
+    with {:ok, %HTTPoison.Response{status_code: 200, body: body}} <-
+           HTTPoison.get("https://www.kyobobook.co.kr/api/gw/onk/benefit/checkGoldenTimeNow"),
+         {:ok, %{data: %{type: "READY", startTime: start_time}}} <-
            Jason.decode(body, keys: :atoms),
-         true <- prev_time != startTime || {:error, :not_changed} do
-      File.write!("tmp/prev_result", startTime)
-      startTime
+         true <- prev_time != start_time || {:error, :not_changed} do
+      File.write!("tmp/prev_result", start_time)
+      start_time
     else
       _ ->
         "error"
